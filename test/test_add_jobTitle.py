@@ -23,15 +23,6 @@ with allure.step("0.从数据文件中读取添加职称数据信息"):
     print("test_data:", test_data)
 
 class TestAddJobTitle(object):
-    # @allure.step("从配置文件中读取登录数据")
-    # @pytest.fixture
-    # def login_data(self):
-    #     self.log = conf.logcon()
-    #     self.log.info("read config.yaml")
-    #     yaml_path = os.path.join(get_par_path(),"config/config.yaml")
-    #     test_data = get_yaml_data(yaml_path)
-    #     return test_data
-
     # 登录
     @allure.feature("登录功能")
     @allure.step("使用zxtzxt身份登录")
@@ -53,12 +44,7 @@ class TestAddJobTitle(object):
             assert 'xiang xiang' in login_page.result_login_success()
             pic_path = os.path.join(get_par_path(),"shootpicture/")
             base_page.save_picture(pic_path+str(datetime.now()) + 'login.png')
-
-    # @allure.step("0:这是初始化数据")
-    # @pytest.fixture
-    # def get_data(self,request):
-    #     value = request.param
-    #     return value
+    # 添加职称
     @allure.feature("添加职称功能")
     @pytest.mark.parametrize("job_data",test_data)
     def test_add_jobTitle(self,init_driver,job_data):
@@ -77,16 +63,6 @@ class TestAddJobTitle(object):
             addjobtitle_page.enter_note_text(noteText)
         with allure.step("3.提交保存"):
             addjobtitle_page.click_addjobtitle_submit()
-            # try:
-            #     WebDriverWait(init_driver, 10).until(
-            #         EC.text_to_be_present_in_element(
-            #             (By.CLASS_NAME, "oxd-toast-content-text"),
-            #             "成功"
-            #         )
-            #     )
-            # except TimeoutException:
-            #     base_page.save_picture("add_job_failed.png")
-            #     pytest.fail("添加职称操作未显示成功消息")
         with allure.step("4.等待页面渲染完成"):
             WebDriverWait(init_driver,10).until(
                 EC.presence_of_element_located((By.XPATH, f"//*[contains(text(), '{jobTitle}')]")))
@@ -98,6 +74,7 @@ class TestAddJobTitle(object):
             )
             # assert expected_url == init_driver.current_url,f"期望URL: {expected_url}, 实际URL: {init_driver.current_url}"
             # 断言2:验证页面标题包含职称
+            # assert jobTitle in init_driver.page_source
             WebDriverWait(init_driver,10).until(
                 EC.text_to_be_present_in_element((By.XPATH,"//h6[contains(@class,'orangehrm-main-title')]"),
                 "职称" ))
@@ -117,7 +94,7 @@ class TestAddJobTitle(object):
             # print("页面标题:", init_driver.title)
             # print("当前URL:", init_driver.current_url)
             # print("页面元素:", init_driver.find_element(By.TAG_NAME, "body").text[:500])
-            # assert jobTitle in init_driver.page_source
+
             pic_path = os.path.join(get_par_path(),"shootpicture/")
             pic_name = pic_path+str(datetime.now()) + '_addjob.png'
             base_page.save_picture(pic_name)
