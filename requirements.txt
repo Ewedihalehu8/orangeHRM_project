@@ -5,3 +5,4 @@ pytest-xdist
 pytest-rerunfailures
 pytest-base-url
 allure-pytest
+selenium
