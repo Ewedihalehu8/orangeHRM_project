@@ -8,3 +8,4 @@ allure-pytest
 selenium
 logbook
 PyYAML
+urllib3==1.26.18
